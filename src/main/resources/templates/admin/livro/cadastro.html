@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layouts/layout-admin">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+
+		<nav class="navbar navbar-expand-md bg-light">
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><i class="oi oi-caret-right"></i>
+						<span>Cadastrar Livro</span></li>
+				</ul>
+				<a class="btn btn-primary btn-md" href="/admin/livros/listar"
+					role="button"> <span class="oi oi-spreadsheet" title="Listar"
+					aria-hidden="true"></span> <span>Listar Livros</span>
+				</a>
+			</div>
+		</nav>
+
+		<div class="container" id="cadastro">
+			
+			<div th:replace="fragments/admin/alert"></div>
+			
+			<form th:action="${livro.id == null} ? @{/admin/livros/salvar} : @{/admin/livros/editar}" 
+				  th:object="${livro}" method="POST">
+				  
+				  <div class="form-row" id="row-livro-titulo">
+				  	<h3>Informações do livro</h3>
+				  </div>
+				  
+				<div class="form-row" id="row-livro">
+					<div class="form-group col-md-6">
+												
+						<label for="titulo">Título:</label>
+						<input type="text" class="form-control" id="titulo" 
+						placeholder="Digite o título do livro" autofocus="autofocus"
+						th:field="*{titulo}" />
+						<br>
+						
+						<label for="ano">Ano:</label>
+						<input type="text" class="form-control" id="ano" 
+						placeholder="Digite o ano em que foi lançado"
+						th:field="*{ano}" />
+						<br>
+						
+						<label for="editora">Editora:</label>
+						<input type="text" class="form-control" id="editora" 
+						placeholder="Digite a editora"
+						th:field="*{editora}" />
+						<br>
+						
+						<label for="edicao">Edição:</label>
+						<input type="text" class="form-control" id="edicao" 
+						placeholder="Digite a edição"
+						th:field="*{edicao}" />
+						<br>
+							
+					</div>
+					
+					<div class="form-group col-md-6">
+						<label for="isbn">ISBN:</label>
+						<input type="text" class="form-control" id="isbn" 
+						placeholder="Digite o ISBN"
+						th:field="*{isbn}" />
+						<br>
+						
+						<label for="num-paginas">Número de páginas:</label>
+						<input type="text" class="form-control" id="num-paginas" 
+						placeholder="Digite o número de páginas"
+						th:field="*{numeroPaginas}" />
+						<br>
+						
+						<label for="sinopse">Sinopse:</label>
+						<input type="text" class="form-control" id="sinopse" 
+						placeholder="Digite a sinopse"
+						th:field="*{sinopse}" />
+						<br>									
+					</div>
+					
+				</div><!-- Fim da Row Livro -->
+				
+				<div class="form-row" id="row-autores-titulo">
+				  	<h3>Cadastro de Autores</h3>
+				</div>
+				
+				<div class="form-row" id="row-botao-autores">
+					<div class="form-group col-md-6" th:if="${#lists.size(livro.autores)} &lt; 10">
+                       	<button class="btn btn-primary btn-sm"  
+                       	type="submit" name="addAutor">Adicionar Autor</button>
+                    </div>
+                        
+                    <div class="form-group col-md-6" th:if="${#lists.size(livro.autores)} >= 10">
+                       	<button class="btn btn-primary btn-sm" 
+                       	type="button" disabled="disabled">Adicionar Autor</button>
+                    </div>
+				</div>
+				
+				<div class="form-row" id="row-add-autor">
+									
+					<div class="form-group col-md-4" 
+						th:each="autores, rowAutor : *{autores}">
+						
+						<label for="nome-autor">Nome completo do autor:</label>
+						<input type="text" class="form-control" id="nome-autor" 
+						placeholder="Digite o nome do Autor"
+						th:field="*{autores[__${rowAutor.index}__].nome}"/>
+												
+						<div class="col-sm-1">
+	                        <button class="btn btn-danger padding-buttons" 
+		                        type="submit" name="removeAutor" th:value="${rowAutor.index}"
+		                        th:if="${rowAutor.index} ge 0 and ${#lists.size(livro.autores) ne 1}" >
+		                        <i class="oi oi-minus" style="color: white;"></i>
+	                        </button>
+                        </div>		
+					</div>
+                </div><!-- Fim row add-Autor -->
+                
+                <div class="form-row" id="row-dimensoes-titulo">
+				  	<h3>Dimensões do Livro</h3>
+				</div>
+                
+                <div class="form-row" id="row-dimensao-capa">
+										
+					<div class="form-group col-md-4" id="dimensoes">
+						
+						<label for="drop-dimensao">Padrão de Dimensão:</label>
+						<select class="form-control" id="drop-dimensao" th:field="*{dimensoes.id}">
+    						<option th:value="0">Selecione um padrão</option>
+    						<option th:each="dimensao : ${listaDimensao}"
+    							th:text="${dimensao.nome}" th:value="${dimensao.id}"></option>
+   						 </select>
+   						 
+   						 <div id="valores-dimensao" th:each="dimensao : ${listaDimensao}">
+   						 	<input id="teste-dimensao" type="hidden" th:value="${dimensao.nome}">
+   						 	<input id="teste-altura" type="hidden" th:value="${dimensao.altura}">
+   						 	<input type="hidden" th:value="${dimensao.largura}">   						 	
+   						 </div>
+						
+						<label for="peso">Peso:</label>
+						<input type="text" class="form-control" id="peso" 
+							placeholder="Digite o peso do Livro"
+							th:field="*{peso}"/>
+						
+						<label for="profundidade">Profundidade:</label>
+						<input type="text" class="form-control" id="profundidade" 
+							placeholder="Digite a profundidade do Livro"
+							th:field="*{profundidade}"/>
+					</div>
+					
+					<div class="form-group col-md-4" id="capa">
+						<label for="capa-url">URL da Capa:</label>
+						<input type="text" class="form-control" id="capa-url" 
+							placeholder="Digite a url da capa"
+							th:field="*{capa.url}"/>
+							
+						<label for="capa-descricao">Descrição da capa:</label>
+						<input type="text" class="form-control" id="capa-descricao" 
+							placeholder="Digite a descrição da capa"
+							th:field="*{capa.descricao}"/>
+					</div>
+				</div><!-- Fim row-dimensao-capa -->
+				
+				<div class="form-row" id="row-precificacao-titulo">
+				  	<h3>Precificação</h3>
+				</div>
+								
+				<div class="form-row" id="row-precificacao">
+									
+					<div class="form-group col-md-4">
+						<label for="drop-precificacao">Padrão de precificação:</label>
+						<select class="form-control" th:field="*{precificacao.id}"  id="drop-precificacao">
+    						<option value="0">Selecione um padrão</option>
+    						<option th:each="preci : ${listaPrecificacao}" th:value="${preci.id}" 
+    							th:text="${preci.nome}"></option>
+   						 </select>
+   						 
+   						<label for="preco-capa">Preço de capa:</label>
+						<input type="text" class="form-control" id="preco-capa" 
+							placeholder="Digite o preço de capa"
+							th:field="*{precoCapa}"/>
+							
+						<label for="preco-venda">Preço de venda:</label>
+						<input type="text" class="form-control" id="preco-venda" 
+							placeholder="Digite o preço de venda"
+							th:field="*{precoVenda}"/>							
+					</div>
+                </div><!-- Fim row-precificacao -->
+                
+                <div class="form-row" id="row-categorias">
+					<h3>Cadastro de Categorias</h3>
+					<div class="form-group col-md-6" th:if="${#lists.size(livro.categorias)} &lt; 9">
+                       	<button class="btn btn-primary btn-sm"  
+                       	type="submit" name="addCat">Adicionar Categoria</button>
+                    </div>
+                        
+                    <div class="form-group col-md-6" th:if="${#lists.size(livro.categorias)} >= 9">
+                       	<button class="btn btn-primary btn-sm" 
+                       	type="button" disabled="disabled">Adicionar Categoria</button>
+                    </div>
+				</div>
+				
+				<div class="form-row" id="row-add-categoria">
+									
+					<div class="form-group col-md-4" 
+						th:each="categorias, rowCat : *{categorias}">			
+						
+						<label for="nome-categoria">Digite a categoria:</label>
+						<input type="text" class="form-control" id="nome-categoria" 
+						placeholder="Digite o nome da categoria"
+						th:field="*{categorias[__${rowCat.index}__].nome}"/>
+						
+						<label for="desc-categoria">Descrição da categoria:</label>
+						<input type="text" class="form-control" id="desc-categoria" 
+						placeholder="Digite a descrição da categoria"
+						th:field="*{categorias[__${rowCat.index}__].descricao}"/>
+												
+						<div class="col-sm-1">
+	                        <button class="btn btn-danger padding-buttons" 
+		                        type="submit" name="removeCat" th:value="${rowCat.index}"
+		                        th:if="${rowCat.index} ge 0 and ${#lists.size(livro.categorias) ne 1}" >
+		                        <i class="oi oi-minus" style="color: black;"></i>
+	                        </button>
+                        </div>
+					</div>
+                </div><!-- Fim row categoria -->                                            
+                
+          		<div class = "form-row" id="row-botao">
+          			<input type="hidden" id="id" th:field="*{id}"/>
+					<h2>Clique aqui para salvar o livro:</h2>
+					<button type="submit" id="salvar" class="btn btn-primary btn-sm">Salvar Livro</button>
+          		</div>    	
+
+			</form>
+		</div>
+	</section>
+</body>
+</html>

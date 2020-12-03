@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layouts/layout-admin">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+
+		<nav class="navbar navbar-expand-md bg-light">
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><i class="oi oi-caret-right"></i>
+						<span>Cadastrar Estoque</span></li>
+				</ul>
+				<a class="btn btn-primary btn-md" href="/admin/estoques/listar"
+					role="button"> <span class="oi oi-spreadsheet" title="Listar"
+					aria-hidden="true"></span> <span>Listar Estoques</span>
+				</a>
+			</div>
+		</nav>
+
+		<div class="container" id="cadastro">
+			
+			<div th:replace="fragments/admin/alert"></div>
+			
+			<form th:action="${estoque.id == null} ? @{/admin/estoques/salvar} : @{/admin/estoques/editar}" 
+				  th:object="${estoque}" method="POST">
+				<div class="form-row" id="row-estoque">
+					<div class="form-group col-md-6">
+						<h3>Informações do estoque</h3>
+						
+						<label for="quantidade">Quantidade:</label>
+						<input type="text" class="form-control" id="quantidade" 
+						placeholder="Digite a quantidade de itens comprados" autofocus="autofocus"
+						th:field="*{quantidade}" />
+						<br>
+						
+						<label for="valor-custo">Valor de custo:</label>
+						<input type="text" class="form-control" id="valor-custo" 
+						placeholder="Digite o valor de custo total"
+						th:field="*{valorCusto}" />
+						<br>
+						
+						<label for="data-entrada">Data da compra:</label>
+						<input type="date" class="form-control" id="data-entrada" 
+						th:field="*{dataEntrada}" />
+						<br>
+												
+						<select class="form-control" th:field="*{livro.id}"  id="drop-livro">
+    						<option value="0">Selecione o livro comprado</option>
+    						<option th:each="liv : ${listaLivros}" th:value="${liv.id}" 
+    							th:text="${liv.titulo}"></option>
+   						 </select>																			
+					</div>
+						
+
+	          		<div class = "form-row" id="row-botao">
+	          			<input type="hidden" id="id" th:field="*{id}"/>
+						<h2>Clique aqui para salvar o cliente:</h2>
+						<button type="submit" id="salvar" class="btn btn-primary btn-sm">Salvar Compra</button>
+	          		</div>    	
+				</div>
+			</form>
+		</div>
+	</section>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layouts/layout-admin">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+
+		<nav class="navbar navbar-expand-md bg-light">
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><i class="oi oi-caret-right"></i>
+						<span>Cadastrar Precificação</span></li>
+				</ul>
+				<a class="btn btn-primary btn-md" href="/admin/precificacoes/listar"
+					role="button"> <span class="oi oi-spreadsheet" title="Listar"
+					aria-hidden="true"></span> <span>Listar Precificações</span>
+				</a>
+			</div>
+		</nav>
+
+		<div class="container" id="cadastro">
+			
+			<div th:replace="fragments/admin/alert"></div>
+			
+			<form th:action="${precificacao.id == null} ? @{/admin/precificacoes/salvar} : @{/admin/precificacoes/editar}" 
+				  th:object="${precificacao}" method="POST">
+				<div class="form-row" id="row-precificacao">
+					<div class="form-group col-md-6">
+						<h3>Informações da conta</h3>
+						
+						<label for="nome">Nome da precificação:</label>
+						<input type="text" class="form-control" id="nome" 
+						placeholder="Digite o nome desse padrão de precificação" autofocus="autofocus"
+						th:field="*{nome}" />
+						<br>
+						
+						<label for="porcentagem-lucro">Porcentagem de Lucro:</label>
+						<input type="text" class="form-control" id="nome-meio" 
+						placeholder="Digite a porcentagem de lucro"
+						th:field="*{porcentagemLucro}" />
+						<br>
+						
+						<label for="porcentagem-desconto">Porcentagem de Desconto:</label>
+						<input type="text" class="form-control" id="porcentagem-desconto" 
+						placeholder="Digite a porcentagem de desconto"
+						th:field="*{porcentagemDesconto}" />
+						<br>
+							
+					</div>                                  
+                
+	          		<div class = "form-row" id="row-botao">
+	          			<input type="hidden" id="id" th:field="*{id}"/>
+						<h2>Clique aqui para salvar o cliente:</h2>
+						<button type="submit" id="salvar" class="btn btn-primary btn-sm">Salvar Precificação</button>
+	          		</div>    	
+				</div>
+			</form>
+		</div>
+	</section>
+</body>
+</html>

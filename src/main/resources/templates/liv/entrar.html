@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layouts/layout-entrar">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+
+
+		<nav class="navbar navbar-expand-md bg-light">
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><i class="oi oi-caret-right"></i>
+						<span>Home</span></li>
+				</ul>
+			</div>
+		</nav>
+
+		<div class="container mt-4">
+
+			<div class="row" id="row-entrar">
+				<div class="col-sm-4 col-sm-offset-4">
+					<div th:if="${param.error}">
+						<div class="alert alert-danger">Usuário inválido</div>
+					</div>
+
+					<div th:if="${param.logout}">
+						<div class="alert alert-info">Até logo!</div>
+					</div>
+
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">Já cadastrado? Entre com seu usuário</h3>
+						</div>
+						<div class="panel-body">
+							<form action="/liv/entrar" method="post">
+								<div class="form-group">
+									<input name="username" class="form-control"
+										placeholder="Usuário" />
+								</div>
+
+								<div class="form-group">
+									<input type="password" name="password" class="form-control"
+										placeholder="Senha" />
+								</div>
+
+								<div class="form-group">
+									<button type="submit" class="btn btn-primary btn-block">Entrar</button>
+								</div>
+
+								<div class="form-group">
+									<input type="checkbox" id="remember-me" name="remember-me" />
+									<label for="remember-me">Lembrar?</label>
+								</div>
+
+								<div class="form-group">
+									<a class="btn btn-primary btn-md" href="/liv/cadastrar"
+										role="button"> <span class="oi oi-spreadsheet"
+										title="Cadastrar" aria-hidden="true"></span> <span>Novo por aqui? Cadastre-se</span>
+									</a>
+								</div>
+
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

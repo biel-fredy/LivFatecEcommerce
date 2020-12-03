@@ -1,0 +1,181 @@
+/*
+ * Base structure
+ */
+html, body {
+	height: 100%;
+}
+
+body {
+	padding-top: 56px;
+	padding-left: 0;
+}
+
+/*
+ * main layout
+ */
+.layout-main {
+	display: flex;
+	min-height: calc(100vh - 52px);
+	overflow: hidden;
+}
+
+/*
+ * Content
+ */
+.layout-content {
+	width: 100%;
+	padding-top: 0px;
+}
+
+.container {
+	width: 100%;
+	height: 100%;
+	padding-top: 20px;
+}
+
+/*
+ * Sidebar
+ */
+.sidebar {
+	width: 0px;
+	height: 100%;
+	border-top: 1px solid #eee;
+	border-right: 1px solid #eee;
+	background-color: #f8f9fa;
+	flex-shrink: 0;
+	overflow: hidden;
+	transition: width .5s;
+}
+
+.sidebar .nav {
+	margin-bottom: 0px;
+}
+
+.sidebar .nav-item {
+	width: 100%;
+}
+
+.sidebar .nav-item {
+	margin-left: 0;
+}
+
+.sidebar .nav-link {
+	border-radius: 0;
+}
+
+.sidebar ul li:hover a, .menu ul li.active a {
+	color: #777777;
+}
+
+.sidebar ul {
+	list-style: none;
+	padding: 10px 0px;
+}
+
+.sidebar ul li a {
+	display: block;
+	color: #1a1a1a;
+	padding: 10px 15px;
+	white-space: nowrap;
+}
+
+.sidebar.sidebar-open {
+	width: 300px;
+}
+
+/*
+ * nav-pills home
+ */
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+	color: #fff;
+	background-color: #a4b88d;
+}
+
+#nav-pills-admin {
+	color: #fff;
+	background-color: black;
+}
+
+/*
+ * toogle do navbar do menu
+ */
+.navbar-toggle {
+	display: inline-block;
+	margin-left: 10px;
+}
+
+/*
+ * Footer
+ */
+.layout-footer {
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: 0;
+	height: 50px;
+	border-top: 1px solid #eeeeee;
+}
+
+.footer-copy {
+	font-size: 92%;
+	display: block;
+	color: #777777;
+	text-align: center;
+}
+
+.row {
+	margin-bottom: 20px;
+}
+
+.prateleira-home .card {
+	/* Add shadows to create the "card" effect */
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	transition: 0.3s;
+	height: 500px;
+}
+
+/* On mouse-over, add a deeper shadow */
+.prateleira-home .card:hover {
+	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Add some padding inside the card container */
+.prateleira-home .card .container {
+	padding: 2px 16px;
+}
+
+.prateleira-home .card a {
+	border: none;
+	outline: 0;
+	padding: 12px;
+	color: white;
+	background-color: #000;
+	text-align: center;
+	cursor: pointer;
+	width: 90%;
+	font-size: 18px;
+}
+
+.prateleira-home .card a:hover {
+	opacity: 0.7;
+}
+
+.prateleira-home .image-card {
+	width: 100%;
+	height: 350px;
+	padding: 16px 16px;
+}
+
+.add-carrinho {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+.lista-livro-img{
+	height: 50px;
+}
+
+a.disabled {
+    pointer-events: none;
+}

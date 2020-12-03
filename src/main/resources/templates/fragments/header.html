@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+	<header th:fragment="cabecalho">
+		<nav
+			class="navbar navbar-inverse navbar-dark fixed-top justify-content-between"
+			style="background-color: #49593a;">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="btn btn-dark navbar-toggle pull-left"
+						style="background-color: #49593a;">
+						<i class="oi oi-menu"></i>
+					</button>
+					<a class="navbar-brand" href="#">Liv Livraria E-commerce</a>
+				</div>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a sec:authorize="isAuthenticated()"  href="/liv/perfil" class="text-light">
+								<span class="oi oi-person"></span> Meu perfil     
+						</a>
+						<a sec:authorize="!isAuthenticated()" href="/liv/entrar" class="text-light">
+								<span class="oi oi-account-login"></span> Entre ou cadastre-se
+						</a> <a onclick="document.querySelector('#form-login').submit()"
+							class="text-light" sec:authorize="isAuthenticated()" href="#">
+							<span class="oi oi-account-logout"></span> Sair</a>
+							<form id="form-login" th:action="@{/logout}" method="post"></form>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+</body>
+</html>

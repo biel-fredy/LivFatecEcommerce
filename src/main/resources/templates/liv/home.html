@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layouts/layout">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+
+	<section class="layout-content" layout:fragment="corpo">
+
+		<nav class="navbar navbar-expand-md bg-light">
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><i class="oi oi-caret-right"></i>
+						<span>Home</span></li>
+				</ul>
+			</div>
+		</nav>
+
+		<div class="container">
+
+			<a class="btn btn-dark" th:href="@{/carrinho/listar}" role="button">
+				<span class="oi oi-cart" title="listaCarrinho" aria-hidden="true">Lista
+					Carrinho</span>
+			</a>
+
+			<div th:replace="fragments/home/alert"></div>
+
+
+			<div class="form-row" id="row-livro">
+				<div class="form-group col-md-3" th:each="livro : *{listaLivros}">
+
+					<div class="prateleira-home">
+						<div class="card" id="card-home">
+							<img class="image-card" id="imagem-cartao"
+								th:src="@{/image/{url} (url=${livro.capa.url})}" alt="Avatar">
+							<div class="container">
+								<h6>
+									<b th:text="*{livro.titulo}">Livro Genérico</b>
+								</h6>
+								<p th:text="|R$ ${{livro.precoVenda}}|">Preço do Livro</p>
+
+								<div class="add-carrinho" th:if="*{livro.quantidadeEstoque} > 0">
+									<p>
+										<a class="btn btn-dark"
+											th:href="@{/carrinho/{id} (id=${livro.id})}" role="button">
+											<span class="oi oi-cart" title="addCarrinho"
+											aria-hidden="true">Adicionar ao carrinho</span>
+										</a>
+									</p>
+								</div>
+
+								<div class="add-carrinho"
+									th:if="*{livro.quantidadeEstoque} <= 0">
+									<p>
+										<a class="btn btn-dark" role="button"> <span
+											class="oi oi-circle-x" title="addCarrinho" aria-hidden="true">
+												FORA DE ESTOQUE</span>
+										</a>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</section>
+
+</body>
+</html>

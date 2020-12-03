@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layouts/layout-admin">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+
+		<nav class="navbar navbar-expand-md bg-light">
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><i class="oi oi-caret-right"></i>
+						<span>Lista de Dimensões</span></li>
+				</ul>
+				<a class="btn btn-primary btn-md" href="/admin/dimensoes/cadastrar"
+					role="button"> <span class="oi oi-plus" title="Cadastro"
+					aria-hidden="true"></span> <span>Cadastrar novo padrão de dimensão</span>
+				</a>
+			</div>
+		</nav>
+
+		<div class="container" id="listagem">
+		
+			<div th:replace="fragments/admin/alert"></div>
+
+			<div class="table-responsive">
+				<table class="table table-striped table-hover table-sm">
+					<thead>
+						<tr>
+							<th>Nome</th>
+							<th>Altura</th>
+							<th>Largura</th>
+							<th>Ação</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="dimensao : ${dimensoes}">
+							<td th:text="${dimensao.nome}"></td>
+							<td th:text="${dimensao.altura}"></td>
+							<td th:text="${dimensao.largura}"></td>
+							<td colspan="2"><a class="btn btn-info btn-sm"
+								th:href="@{/admin/dimensoes/editar/{id} (id=${dimensao.id})}" role="button"> <span
+									class="oi oi-brush" title="Editar" aria-hidden="true"></span>
+							</a>
+								<button th:id="${'btn_admin/dimensoes/excluir/' + dimensao.id}" type="button"
+									class="btn btn-danger btn-sm"
+									data-toggle="modal" data-target="#myModal">
+									<span class="oi oi-circle-x" title="Exclusão desabilitada"
+										aria-hidden="true"></span>
+								</button></td>
+						</tr>				
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div th:replace="fragments/admin/modal :: modal"></div>
+	</section>
+</body>
+</html>

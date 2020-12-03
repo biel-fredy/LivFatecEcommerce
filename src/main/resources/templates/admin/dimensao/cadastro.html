@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layouts/layout-admin">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+
+		<nav class="navbar navbar-expand-md bg-light">
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><i class="oi oi-caret-right"></i>
+						<span>Cadastrar Dimensão</span></li>
+				</ul>
+				<a class="btn btn-primary btn-md" href="/admin/dimensoes/listar"
+					role="button"> <span class="oi oi-spreadsheet" title="Listar"
+					aria-hidden="true"></span> <span>Listar Dimensão</span>
+				</a>
+			</div>
+		</nav>
+
+		<div class="container" id="cadastro">
+			
+			<div th:replace="fragments/admin/alert"></div>
+			
+			<form th:action="${dimensao.id == null} ? @{/admin/dimensoes/salvar} : @{/admin/dimensoes/editar}" 
+				  th:object="${dimensao}" method="POST">
+				<div class="form-row" id="row-dimensao">
+					<div class="form-group col-md-6">
+						<h3>Cadastro de Dimensão</h3>
+						
+						<label for="nome">Nome:</label>
+						<input type="text" class="form-control" id="nome" 
+						placeholder="Digite um nome para identificar esse padrão" autofocus="autofocus"
+						th:field="*{nome}" />
+						<br>
+						
+						<label for="altura">Altura:</label>
+						<input type="text" class="form-control" id="altura" 
+						placeholder="Digite a altura" autofocus="autofocus"
+						th:field="*{altura}" />
+						<br>
+						
+						<label for="largura">Largura:</label>
+						<input type="text" class="form-control" id="largura" 
+						placeholder="Digite a largura"
+						th:field="*{largura}" />
+						<br>
+								
+					</div>                                
+                
+	          		<div class = "form-row" id="row-botao">
+	          			<input type="hidden" id="id" th:field="*{id}"/>
+						<h2>Clique aqui para salvar a dimensão:</h2>
+						<button type="submit" id="salvar" class="btn btn-primary btn-sm">Salvar Dimensão</button>
+	          		</div> 
+          		</div>
+			</form>
+		</div>
+	</section>
+</body>
+</html>

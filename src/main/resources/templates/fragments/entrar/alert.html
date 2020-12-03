@@ -1,0 +1,27 @@
+
+<div th:if="${success} != null">
+	<div class="alert alert-success alert-dismissible fade show"
+		role="alert">
+		<i class="oi oi-check"></i> <span> <strong th:text="${success}"></strong>
+		</span>
+		<button type="button" class="close" data-dismiss="alert">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<a class="btn btn-primary btn-md" href="/"
+			role="button"> <span class="oi oi-spreadsheet" title="Listar"
+			aria-hidden="true"></span> <span>Acessar Carrinho</span>
+		</a>
+	</div>
+</div>
+
+<div th:if="${fail} != null">
+	<div class="alert alert-danger alert-dismissible fade show"
+		role="alert">
+		<i class="oi oi-check"></i> <span> <strong th:text="${fail}"></strong>
+		</span>
+		<button type="button" class="close" data-dismiss="alert"
+			aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+</div>
