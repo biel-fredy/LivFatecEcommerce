@@ -6,31 +6,61 @@
 <body>
 	<header th:fragment="cabecalho">
 		<nav
-			class="navbar navbar-inverse navbar-dark fixed-top justify-content-between"
+			class="navbar navbar-inverse navbar-dark fixed-top navbar-expand-lg"
 			style="background-color: #49593a;">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<button type="button" class="btn btn-dark navbar-toggle pull-left"
-						style="background-color: #49593a;">
-						<i class="oi oi-menu"></i>
-					</button>
-					<a class="navbar-brand" href="#">Liv Livraria E-commerce</a>
-				</div>
-				<ul class="nav navbar-nav navbar-right">
-					<li>
-						<a sec:authorize="isAuthenticated()"  href="/liv/perfil" class="text-light">
-								<span class="oi oi-person"></span> Meu perfil     
-						</a>
-						<a sec:authorize="!isAuthenticated()" href="/liv/entrar" class="text-light">
-								<span class="oi oi-account-login"></span> Entre ou cadastre-se
-						</a> <a onclick="document.querySelector('#form-login').submit()"
-							class="text-light" sec:authorize="isAuthenticated()" href="#">
-							<span class="oi oi-account-logout"></span> Sair</a>
-							<form id="form-login" th:action="@{/logout}" method="post"></form>
-					</li>
+			<div class="navbar-header">
+				<button type="button" class="btn btn-dark navbar-toggle pull-left"
+					style="background-color: #49593a;">
+					<i class="oi oi-menu"></i>
+				</button>
+				<a class="navbar-brand" href="/liv/home">Liv Livraria</a>
+			</div>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item dropdown"><a
+						sec:authorize="isAuthenticated()" class="nav-link dropdown-toggle"
+						href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false"> <span
+							class="oi oi-person"></span> Meu Perfil
+					</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="#">Alterar dados <span
+								class="oi oi-pencil"></span></a> <a class="dropdown-item" href="#">Alterar
+								senha <span class="oi oi-lock-locked"></span>
+							</a>
+						</div></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/carrinho/listar}" aria-haspopup="true"
+						aria-expanded="false"> <span class="oi oi-cart"></span> Meu
+							Carrinho
+					</a>
+						<form id="form-login" th:action="@{/logout}" method="post"></form></li>
+					<li class="nav-item"><a class="nav-link"
+						sec:authorize="!isAuthenticated()" href="/liv/entrar"
+						aria-haspopup="true" aria-expanded="false"> <span
+							class="oi oi-account-login"></span> Entre ou cadastre-se
+					</a></li>
+					<li class="nav-item"><a sec:authorize="isAuthenticated()"
+						onclick="document.querySelector('#form-login').submit()"
+						class="nav-link" href="#">Sair <span
+							class="oi oi-account-logout"></span></a></li>
+
 				</ul>
+				<form class="form-inline my-2 my-lg-0">
+					<input class="form-control mr-sm-2" type="search"
+						placeholder="Search" aria-label="Search">
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				</form>
 			</div>
 		</nav>
+
 	</header>
 </body>
 </html>
