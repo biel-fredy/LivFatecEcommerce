@@ -27,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 					.antMatchers("/admin/**").hasAnyRole("ADMIN")
 					.antMatchers("/carrinho/**").hasAnyRole("CLIENTE")
+					.antMatchers("/perfil/**").hasAnyRole("CLIENTE")
 				.and()
 					.formLogin().loginPage("/liv/entrar").permitAll().defaultSuccessUrl("/home", true)
 				.and()
