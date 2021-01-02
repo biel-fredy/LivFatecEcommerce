@@ -78,6 +78,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 		ResultadoUsuario resultado = new ResultadoUsuario();
 
 		String msg = executarRegras(usuario, "ALTERAR");
+		
+		if (usuario.getCliente() != null) {
+			for (Endereco end : usuario.getCliente().getEnderecos()) {
+				end.setCliente(usuario.getCliente());
+			}
+			
+			for (Telefone tel : usuario.getCliente().getTelefones()) {
+				tel.setCliente(usuario.getCliente());
+			}
+		}
 
 		if (msg == null) {
 			daoUsuario.update(usuario);

@@ -31,8 +31,9 @@
 							class="oi oi-person"></span> Meu Perfil
 					</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="#">Alterar dados <span
-								class="oi oi-pencil"></span></a> <a class="dropdown-item" href="#">Alterar
+							<a class="dropdown-item" th:href="@{/perfil/editar}">Alterar dados <span
+								class="oi oi-pencil"></span></a> <a class="dropdown-item" 
+								th:href="@{/perfil/alterar-senha}">Alterar
 								senha <span class="oi oi-lock-locked"></span>
 							</a>
 						</div></li>

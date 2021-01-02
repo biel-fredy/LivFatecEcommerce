@@ -1,122 +1,97 @@
 package br.gov.sp.fatec.livraria.web.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.gov.sp.fatec.livraria.aplicacao.Sessao;
+import br.gov.sp.fatec.livraria.aplicacao.Usuario;
 import br.gov.sp.fatec.livraria.aplicacao.resultado.ResultadoCliente;
-import br.gov.sp.fatec.livraria.aplicacao.resultado.ResultadoLivro;
+import br.gov.sp.fatec.livraria.aplicacao.resultado.ResultadoUsuario;
 import br.gov.sp.fatec.livraria.domain.Cliente;
-import br.gov.sp.fatec.livraria.domain.ItemVenda;
-import br.gov.sp.fatec.livraria.domain.Livro;
+import br.gov.sp.fatec.livraria.domain.Endereco;
+import br.gov.sp.fatec.livraria.domain.Telefone;
 import br.gov.sp.fatec.livraria.service.ClienteService;
-import br.gov.sp.fatec.livraria.service.LivroService;
+import br.gov.sp.fatec.livraria.service.UsuarioService;
 
 @Controller
 @RequestMapping("/perfil")
 public class PerfilController {
 
 	@Autowired
-	private LivroService livroService;
-
-	@Autowired
 	private ClienteService clienteService;
-
-	private List<Livro> listaLivros = new ArrayList<Livro>();
+	
+	@Autowired
+	private UsuarioService usuarioService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	private Cliente cliente;
 
 	@GetMapping("/editar")
-	public ModelAndView listarCarrinho(@SessionAttribute("sessao") Sessao sessao) {
-		ModelAndView modelAndView = new ModelAndView("/perfil/lista");
+	public ModelAndView preEditarPerfil(@SessionAttribute("sessao") Sessao sessao) {
+		System.out.println("chega aqui");
+		ModelAndView modelAndView = new ModelAndView("/perfil/editar");
 		procuraCliente(sessao.getUsuario().getCliente());
 		sessao.getUsuario().setCliente(this.cliente);
-		modelAndView.addObject("carrinho", sessao.getCarrinho());
-		modelAndView.addObject("valorTotal", sessao.getCarrinho().totalCarrinho());
 		modelAndView.addObject("cliente", this.cliente);
-
-		System.out.println("cheg qesw");
+		
+		System.out.println(this.cliente.getEnderecos().size());
+		
+		modelAndView.addObject("usuario", sessao.getUsuario());
 		return modelAndView;
 	}
-
-	@GetMapping("/adicionar/{id}")
-	public ModelAndView addUnidade(@SessionAttribute("sessao") Sessao sessao, @PathVariable("id") Long id) {
-		ModelAndView modelAndView = new ModelAndView("/carrinho/lista");
-		carregaListaLivros();
-
-		for (ItemVenda item : sessao.getCarrinho().getItensVenda()) {
-			if (item.getLivro().getId() == id) {
-				for (Livro livro : this.listaLivros) {
-					if (item.getLivro().getId() == livro.getId()) {
-						if (livro.getQuantidadeEstoque() - (item.getQuantidade() + 1) >= 0) {
-							System.out.println(livro.getQuantidadeEstoque() - (item.getQuantidade() + 1));
-							item.addQuantidade();
-						} else {
-							sessao.setMsg("Não há quantidade em estoque.");
-							modelAndView.addObject("msg", sessao.getMsg());
-						}
-					}
-				}
-			}
-		}
-
-		modelAndView.addObject("carrinho", sessao.getCarrinho());
-		modelAndView.addObject("valorTotal", sessao.getCarrinho().totalCarrinho());
-		modelAndView.addObject("cliente", this.cliente);
-		return modelAndView;
+	
+	@PostMapping("/editar")
+	public String editarPerfil(Usuario usuario, RedirectAttributes attr) {
+		String senhaEncodada = passwordEncoder.encode(usuario.getSenha());
+		usuario.setSenha(senhaEncodada);
+		ResultadoUsuario resultado = usuarioService.editar(usuario);
+		attr.addFlashAttribute(resultado.getSuccessOrFailed(), resultado.getMensagem());
+		return "redirect:/perfil/editar";
+	}
+	
+	@PostMapping(value = "/editar", params = { "addEnd" }, name = "addEnd")
+	public String editarAddEnd(final Usuario usuario, @RequestParam("addEnd") String addRow,
+			final BindingResult bindingResult) {
+		Endereco endereco = new Endereco();
+		usuario.getCliente().addEndereco(endereco);
+		return "/perfil/editar";
 	}
 
-	@GetMapping("/remover/{id}")
-	public ModelAndView removeUnidade(@SessionAttribute("sessao") Sessao sessao, @PathVariable("id") Long id) {
-		ModelAndView modelAndView = new ModelAndView("/carrinho/lista");
-		Boolean removeItem = false;
-
-		for (ItemVenda item : sessao.getCarrinho().getItensVenda()) {
-			if (item.getLivro().getId() == id) {
-				if (item.getQuantidade() - 1 > 0) {
-					item.removeQuantidade();
-				} else {
-					removeItem = true;
-				}
-			}
-		}
-
-		if (removeItem) {
-			sessao.getCarrinho().removeItem(id);
-		}
-
-		modelAndView.addObject("carrinho", sessao.getCarrinho());
-		modelAndView.addObject("valorTotal", sessao.getCarrinho().totalCarrinho());
-		modelAndView.addObject("cliente", this.cliente);
-		return modelAndView;
+	@PostMapping(value = "/editar", params = { "removeEnd" })
+	public String editarRemoveEnd(final Usuario usuario, final BindingResult bindingResult,
+			final HttpServletRequest req) {
+		final Integer rowId = Integer.valueOf(req.getParameter("removeEnd"));
+		usuario.getCliente().removeEndereco(rowId.intValue());
+		return "/perfil/editar";
 	}
 
-	@GetMapping("/removerItem/{id}")
-	public ModelAndView removerItem(@SessionAttribute("sessao") Sessao sessao, @PathVariable("id") Long id) {
-		ModelAndView modelAndView = new ModelAndView("/carrinho/lista");
-		sessao.getCarrinho().removeItem(id);
-		modelAndView.addObject("carrinho", sessao.getCarrinho());
-		modelAndView.addObject("valorTotal", sessao.getCarrinho().totalCarrinho());
-		modelAndView.addObject("cliente", this.cliente);
-		return modelAndView;
+	@PostMapping(value = "/editar", params = { "addTel" }, name = "addTel")
+	public String editarAddTel(final Usuario usuario, @RequestParam("addTel") String addTel,
+			final BindingResult bindingResult) {
+		Telefone telefone = new Telefone();
+		usuario.getCliente().addTelefone(telefone);
+		return "/perfil/editar";
 	}
 
-	public void carregaListaLivros() {
-		ResultadoLivro resultado = livroService.buscarTodos();
-
-		for (Livro livro : resultado.getResultadoLista()) {
-			livro.carregaQuantidadeEstoque();
-		}
-
-		this.listaLivros = resultado.getResultadoLista();
+	@PostMapping(value = "/editar", params = { "removeTel" })
+	public String editarRemoveTel(final Usuario usuario, final BindingResult bindingResult,
+			final HttpServletRequest req) {
+		final Integer rowId = Integer.valueOf(req.getParameter("removeTel"));
+		usuario.getCliente().removeTelefone(rowId.intValue());
+		return "/perfil/editar";
 	}
 
 	public void procuraCliente(Cliente cliente) {

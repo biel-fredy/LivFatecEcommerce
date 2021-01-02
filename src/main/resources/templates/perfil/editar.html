@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="layouts/layout-entrar">
+	layout:decorate="layouts/layout">
 <head>
 <meta charset="UTF-8" />
 </head>
@@ -12,7 +12,7 @@
 
 			<div th:replace="fragments/entrar/alert"></div>
 
-			<form th:action="@{/liv/salvar}" th:object="${usuario}" method="POST">
+			<form th:action="@{/perfil/editar}" th:object="${usuario}" method="POST">
 
 				<div class="form-row" id="row-cliente">
 					<div class="form-group col-md-6">
@@ -227,11 +227,11 @@
 
 				<div th:if="${success} != null">
 					<button class="btn btn-primary btn-sm" type="button"
-						disabled="disabled">Cadastrar</button>
+						disabled="disabled">Alterar</button>
 				</div>
 
 				<div th:if="${success} == null">
-					<button class="btn btn-primary btn-sm" type="submit" name="salvar">Cadastrar</button>
+					<button class="btn btn-primary btn-sm" type="submit" name="editar">Alterar</button>
 				</div>
 			</form>
 		</div>
